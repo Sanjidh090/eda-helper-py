@@ -15,6 +15,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from wordcloud import WordCloud, STOPWORDS
 from IPython.display import display, HTML
+import plotly.express as px
 
 
 def display_html(size=3, content="content"):
@@ -1118,3 +1119,61 @@ def dt_univar_plots(data, var, target=None, bins="auto"):
   )
   rotate_xlabels(ax2)
   ax2.set(title="Line Plot")
+    
+def generate_eda_report(data, output_format='pdf'):
+    """
+    Generate an Automated EDA report for the given DataFrame.
+
+    Parameters:
+    - data (pd.DataFrame): The DataFrame to analyze.
+    - output_format (str): The format of the report ('html' or 'pdf').
+
+    Returns:
+    - str: Path to the generated report.
+    """
+    import pandas_profiling
+
+    report = pandas_profiling.ProfileReport(data, title='Automated EDA Report')
+
+    if output_format == 'html':
+        report_file = 'eda_report.html'
+        report.to_file(report_file)
+    elif output_format == 'pdf':
+        report_file = 'eda_report.pdf'
+        report.to_file(report_file)
+    else:
+        raise ValueError("Invalid output format. Choose either 'html' or 'pdf'.")
+
+    return report_file
+
+def interactive_scatter_plot(data, x, y, color=None, title=None):
+    """
+    Create an interactive scatter plot using Plotly.
+
+    Parameters:
+    - data (pd.DataFrame): The DataFrame containing the data.
+    - x (str): The column name for the x-axis.
+    - y (str): The column name for the y-axis.
+    - color (str): The column name for coloring points (optional).
+    - title (str): The title of the plot (optional).
+
+    Returns:
+    - plotly.graph_objects.Figure: The interactive scatter plot.
+    """
+    fig = px.scatter(data, x=x, y=y, color=color, title=title)
+    fig.show()
+
+def interactive_heatmap(data, title=None):
+    """
+    Create an interactive heatmap using Plotly.
+
+    Parameters:
+    - data (pd.DataFrame): The DataFrame containing the data.
+    - title (str): The title of the plot (optional).
+
+    Returns:
+    - plotly.graph_objects.Figure: The interactive heatmap.
+    """
+    fig = px.imshow(data, title=title, aspect="auto")
+    fig.show()
+
