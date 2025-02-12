@@ -21,6 +21,7 @@ setup(
         "scikit-learn",
         "wordcloud",
         "IPython"
+        "plotly"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
